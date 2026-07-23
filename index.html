@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlagScale</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Image placeholder -->
+    <div class="image-container">
+      <img id="flag-image" src="" alt="Flag">
+    </div>
+
+    <!-- Input and Guess button -->
+    <div class="input-section">
+      <input 
+        type="text" 
+        class="guess-input" 
+        id="guess-input" 
+        placeholder="Country..."
+        autocomplete="off"
+      >
+      <button class="guess-button" id="guess-button">GUESS</button>
+    </div>
+
+    <!-- 6 guess rows -->
+    <div class="guesses-container" id="guesses-container">
+        <div class="guess-row active" data-row="1">Guess 1 / 6</div>
+        <div class="guess-row" data-row="2"></div>
+        <div class="guess-row" data-row="3"></div>
+        <div class="guess-row" data-row="4"></div>
+        <div class="guess-row" data-row="5"></div>
+        <div class="guess-row" data-row="6"></div>
+    </div>
+  </div>
+</body>
+</html>
