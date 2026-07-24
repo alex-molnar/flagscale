@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: grayscale
+    app.kubernetes.io/name: grayscale
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: grayscale
+  namespace: grayscale
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - grayscale.kak.im
+      secretName: grayscale-tls
+  rules:
+  - host: grayscale.kak.im
+    http:
+      paths:
+      - backend:
+          service:
+            name: grayscale
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

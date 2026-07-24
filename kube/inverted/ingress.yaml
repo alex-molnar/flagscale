@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: invertedle
+    app.kubernetes.io/name: invertedle
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: invertedle
+  namespace: invertedle
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - invertedle.kak.im
+      secretName: invertedle-tls
+  rules:
+  - host: invertedle.kak.im
+    http:
+      paths:
+      - backend:
+          service:
+            name: invertedle
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
