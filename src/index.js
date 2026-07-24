@@ -37,17 +37,17 @@ function loadGame() {
         let guessInput = document.getElementById("guess-input")
         guessInput.addEventListener("input", searchForSolution)
         guessInput.addEventListener("keydown", handleKeyboardNavigation)
-        // guessInput.addEventListener("keypress", (e) => {
-        //     if (e.key === "Enter") {
-        //         submitGuess(e)
-        //     }
-        // })
+        guessInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                submitGuess(e)
+            }
+        })
         guessInput.addEventListener("blur", () => {
             setTimeout(hideSuggestions, 150) // Delay to allow click on suggestion
         })
         guessInput.focus()
         guessInput.select()
-        // document.getElementById("submit-button").addEventListener("click", submitGuess)
+        document.getElementById("submit-button").addEventListener("click", submitGuess)
         document.getElementById("flag-image").src = `assets/grayscale/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
     }
 }
@@ -64,7 +64,6 @@ function searchForSolution(e) {
             .slice(0, 8) // Limit to 8 suggestions
         
         if (filteredSolutions.length > 0) {
-            console.log("Filtered Solutions:", filteredSolutions)
             suggestionsContainer.innerHTML = filteredSolutions.map((solution, index) => 
                 `<div class="suggestion-item" data-value="${solution}" data-index="${index}">${solution}</div>`
             ).join('')
@@ -75,7 +74,6 @@ function searchForSolution(e) {
                 item.addEventListener("click", () => selectSuggestion(item.dataset.value))
             })
         } else {
-            console.log("No suggestions found.")
             hideSuggestions()
         }
     } else {
@@ -120,6 +118,62 @@ function updateSelectedSuggestion(items) {
     })
     if (selectedSuggestionIndex >= 0) {
         document.getElementById("guess-input").value = items[selectedSuggestionIndex].dataset.value
+    }
+}
+
+function submitGuess(e) {
+    let guessInput = document.getElementById("guess-input")
+    let guess = guessInput.value
+    if (!solutions.includes(guess)) {
+        let firstChoice = solutions
+            .filter(solution => !alreadyGuessed.includes(solution))
+            .find(solution => solution.toLowerCase().startsWith(guess.toLowerCase().trim()) || solution.toLowerCase().includes(`(${guess.toLowerCase().trim()}`))
+        if (firstChoice && guess.toLowerCase().trim().length > 0) {
+            guessInput.value = firstChoice.trim()
+            submitGuess(e)
+        } else if (guess.toLowerCase().trim().length > 0) {
+            alert(`Please select a valid ${gameTitle.unLe()} from the suggestions`)
+        }
+    } else if (alreadyGuessed.includes(guess)) {
+        alert(`You have already guessed this ${gameTitle.unLe()}`)
+    } else if (guess === todaysSolution.name) {
+        alreadyGuessed.push(guess)
+        localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
+        // displayWinningGuessRow(true)
+        guessInput.value = ""
+    } else {
+        alreadyGuessed.push(guess)
+        localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
+        displayNewGuessRow(guess, alreadyGuessed.length)
+        guessInput.value = ""
+    }
+    hideSuggestions()
+}
+
+function displayNewGuessRow(guessName, rowNumber) {
+    const guessData = solutionsData[guessName]
+    const todaysData = todaysSolution
+
+    // Calculate distance and direction
+    const distance = mathDistance(
+        guessData.latitude, guessData.longitude,
+        todaysData.latitude, todaysData.longitude
+    )
+
+    const directionEmoji = getDirectionClass(Math.atan2(guessData.longitude - todaysData.longitude, guessData.latitude - todaysData.latitude) * 180 / Math.PI)
+
+    // Get current active row and fill it
+    const currentRow = document.querySelector(`.guess-row[data-row="${rowNumber}"]`)
+    currentRow.innerHTML = formatGuessItem(guessName, distance, directionEmoji)
+    currentRow.classList.remove("active")
+    currentRow.classList.add("filled")
+
+    // Make next row active (if exists)
+    const nextRowNumber = rowNumber + 1
+    if (nextRowNumber <= 6) {
+        const nextRow = document.querySelector(`.guess-row[data-row="${nextRowNumber}"]`)
+        nextRow.classList.add("active")
+        nextRow.textContent = `Guess ${nextRowNumber} / 6`
     }
 }
 
