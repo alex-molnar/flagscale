@@ -1,4 +1,4 @@
-let gameTitle = "greyscale" // PARAM_GAME_TITLE
+let gameTitle = PARAM_GAME_TITLE
 let alreadyGuessed = [] 
 let currentDate = new Date().toJSON().slice(0, 10);
 let todaysSolutionName = getRandomSolutionForToday()
@@ -6,7 +6,7 @@ let todaysSolution = solutionsData[todaysSolutionName]
 let selectedSuggestionIndex = -1
 
 function getRandomSolutionForToday() {
-  let seed = parseInt(currentDate.replaceAll("-", ""));
+  let seed = parseInt(currentDate.replaceAll("-", "") + gameTitle.length);
   // LCG using GCC's constants
   m = 0x80000000; // 2**31;
   a = 1103515245;
@@ -27,7 +27,7 @@ function getAlreadyGuessedToday() {
 
 function loadGame() {
     getAlreadyGuessedToday()
-    document.getElementById("flag-image").src = `assets/grayscale/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
+    document.getElementById("flag-image").src = `assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
     alreadyGuessed
         .filter(guess => guess !== todaysSolutionName)
         .forEach((guess, index) => displayNewGuessRow(guess, index + 1))
