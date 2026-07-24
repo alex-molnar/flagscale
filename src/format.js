@@ -5,11 +5,11 @@ function format(str, ...values) {
 }
 
 let guessItem = `
-            <div class="guess-item guess-name">{0}</div>
-            <div class="guess-item guess-distance">{1}km</div>
-            <div class="guess-item guess-direction">{2}</div>
+            <div class="guess-item guess-name{3}">{0}</div>
+            <div class="guess-item guess-distance{3}">{1}km</div>
+            <div class="guess-item guess-direction{3}">{2}</div>
         `
 
-function formatGuessItem(name, distance, direction) {
-    return format(guessItem, name, distance, direction)
+function formatGuessItem(name, distance, direction, additionalClassList = "") {
+    return format(guessItem, name, distance, direction, ` ${additionalClassList}`)
 }

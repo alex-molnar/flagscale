@@ -27,12 +27,12 @@ function getAlreadyGuessedToday() {
 
 function loadGame() {
     getAlreadyGuessedToday()
+    document.getElementById("flag-image").src = `assets/grayscale/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
     alreadyGuessed
         .filter(guess => guess !== todaysSolutionName)
         .forEach((guess, index) => displayNewGuessRow(guess, index + 1))
     if (alreadyGuessed.includes(todaysSolutionName)) {
-        // displayWinningGuessRow()
-        console.log("You already guessed the solution today!")
+        displayWinningGuessRow(todaysSolutionName, alreadyGuessed.length)
     } else {
         let guessInput = document.getElementById("guess-input")
         guessInput.addEventListener("input", searchForSolution)
@@ -48,7 +48,6 @@ function loadGame() {
         guessInput.focus()
         guessInput.select()
         document.getElementById("submit-button").addEventListener("click", submitGuess)
-        document.getElementById("flag-image").src = `assets/grayscale/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
     }
 }
 
@@ -139,8 +138,14 @@ function submitGuess(e) {
     } else if (guess === todaysSolution.name) {
         alreadyGuessed.push(guess)
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
-        // displayWinningGuessRow(true)
+        displayWinningGuessRow(guess, alreadyGuessed.length)
         guessInput.value = ""
+    // } else if (alreadyGuessed.length >= 6) {
+    //     alreadyGuessed.push(guess)
+    //     localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
+    //     guessInput.value = ""
+    //     displayNewGuessRow(guess, alreadyGuessed.length)
+    //     displayGameOverRow()
     } else {
         alreadyGuessed.push(guess)
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
@@ -175,6 +180,26 @@ function displayNewGuessRow(guessName, rowNumber) {
         nextRow.classList.add("active")
         nextRow.textContent = `Guess ${nextRowNumber} / 6`
     }
+}
+
+function displayWinningGuessRow(guessName, rowNumber) {
+    const guessData = solutionsData[guessName]
+    const todaysData = todaysSolution
+
+    // Get current active row and fill it with winning state
+    const currentRow = document.querySelector(`.guess-row[data-row="${rowNumber}"]`)
+    currentRow.innerHTML = formatGuessItem(guessName, 0, "🎉", "correct")
+    currentRow.classList.remove("active")
+    currentRow.classList.add("filled", "correct")
+
+    // Disable input and button
+    const guessInput = document.getElementById("guess-input")
+    const submitButton = document.getElementById("submit-button")
+    
+    guessInput.disabled = true
+    guessInput.placeholder = "You won!"
+    guessInput.value = ""
+    submitButton.disabled = true
 }
 
 window.onload = loadGame
