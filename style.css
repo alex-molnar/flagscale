@@ -282,3 +282,56 @@ body {
 #suggestions-container::-webkit-scrollbar-thumb:hover {
     background: #6a6a94;
 }
+
+/* Confetti animation */
+#confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+.confetti {
+    position: absolute;
+    top: -20px;
+    opacity: 0;
+    animation: confettiFall ease-out forwards;
+}
+
+.confetti.square {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+.confetti.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.confetti.ribbon {
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+@keyframes confettiFall {
+    0% {
+        top: -20px;
+        opacity: 1;
+        transform: translateX(0) rotate(0deg) scale(1);
+    }
+    25% {
+        opacity: 1;
+    }
+    100% {
+        top: 100vh;
+        opacity: 0;
+        transform: translateX(calc(-50px + 100px * var(--random, 0.5))) rotate(720deg) scale(0.5);
+    }
+}
