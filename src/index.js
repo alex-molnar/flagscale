@@ -33,6 +33,8 @@ function loadGame() {
         .forEach((guess, index) => displayNewGuessRow(guess, index + 1))
     if (alreadyGuessed.includes(todaysSolutionName)) {
         displayWinningGuessRow(todaysSolutionName, alreadyGuessed.length)
+    } else if (alreadyGuessed.length >= 6) {
+        displayGameOverRow()
     } else {
         let guessInput = document.getElementById("guess-input")
         guessInput.addEventListener("input", searchForSolution)
@@ -140,12 +142,13 @@ function submitGuess(e) {
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
         displayWinningGuessRow(guess, alreadyGuessed.length)
         guessInput.value = ""
-    // } else if (alreadyGuessed.length >= 6) {
-    //     alreadyGuessed.push(guess)
-    //     localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
-    //     guessInput.value = ""
-    //     displayNewGuessRow(guess, alreadyGuessed.length)
-    //     displayGameOverRow()
+    } else if (alreadyGuessed.length >= 5) {
+        // This is the 6th and final guess
+        alreadyGuessed.push(guess)
+        localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
+        guessInput.value = ""
+        displayNewGuessRow(guess, alreadyGuessed.length)
+        displayGameOverRow()
     } else {
         alreadyGuessed.push(guess)
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
@@ -198,6 +201,24 @@ function displayWinningGuessRow(guessName, rowNumber) {
     
     guessInput.disabled = true
     guessInput.placeholder = "You won!"
+    guessInput.value = ""
+    submitButton.disabled = true
+}
+
+function displayGameOverRow() {
+    // Create message element above guess rows
+    const guessesContainer = document.getElementById("guesses-container")
+    const answerMessage = document.createElement("div")
+    answerMessage.className = "answer-message"
+    answerMessage.textContent = `Today's answer was ${todaysSolutionName}`
+    guessesContainer.parentNode.insertBefore(answerMessage, guessesContainer)
+
+    // Disable input and button
+    const guessInput = document.getElementById("guess-input")
+    const submitButton = document.getElementById("submit-button")
+    
+    guessInput.disabled = true
+    guessInput.placeholder = "Game over!"
     guessInput.value = ""
     submitButton.disabled = true
 }

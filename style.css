@@ -112,6 +112,19 @@ body {
     margin-top: -12px;
 }
 
+/* Answer message (game over) */
+.answer-message {
+    width: 100%;
+    padding: 14px 18px;
+    background-color: #3a3a55;
+    border: 2px solid #e65c44;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
 /* Guess rows */
 .guesses-container {
     width: 100%;
