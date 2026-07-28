@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: invertedle
+  namespace: invertedle
   labels:
     app: invertedle
 spec:
