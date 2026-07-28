@@ -28,6 +28,7 @@ function getAlreadyGuessedToday() {
 function loadGame() {
     getAlreadyGuessedToday()
     document.getElementById("game-title").textContent = gameTitle.capitalize()
+    document.getElementById("game-description").textContent = explanations[gameTitle] || ""
     document.getElementById("flag-image").src = `assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
     alreadyGuessed
         .filter(guess => guess !== todaysSolutionName)
