@@ -2036,3 +2036,8 @@ const solutionsData = {
 }
 
 const solutions = Object.keys(solutionsData);
+
+const explanations = {
+    "grayscale": "Guess the country which's flag is displayed in grayscale above. Wrong guesses give you additional hints.",
+    "invertedle": "Guess the country which's flag is displayed in inverted rgb scale above. Wrong guesses give you additional hints."
+}
