@@ -71,13 +71,13 @@ jobs:
             ${{ env.IMAGE_NAME_INVERTEDLE }}:${{ steps.version.outputs.VERSION }}
             ${{ env.IMAGE_NAME_INVERTEDLE }}:latest
           build-args: |
-            FLAVOUR=inverted
+            FLAVOUR=invertedle
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Update invertedle deployment image tag
         run: |
-          sed -i "s|image: kingbrady/invertedle:.*|image: kingbrady/invertedle:${{ steps.version.outputs.VERSION }}|" kube/inverted/deployment.yaml
+          sed -i "s|image: kingbrady/invertedle:.*|image: kingbrady/invertedle:${{ steps.version.outputs.VERSION }}|" kube/invertedle/deployment.yaml
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
@@ -92,7 +92,7 @@ jobs:
         run: |
           kubectl apply -f kube/grayscale/deployment.yaml
           kubectl rollout status deployment/grayscale -n grayscale --timeout=120s
-          kubectl apply -f kube/inverted/deployment.yaml
+          kubectl apply -f kube/invertedle/deployment.yaml
           kubectl rollout status deployment/invertedle -n invertedle --timeout=120s
 
       - name: Cleanup kubeconfig
