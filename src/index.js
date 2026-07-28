@@ -142,6 +142,7 @@ function submitGuess(e) {
     } else if (guess === todaysSolution.name) {
         alreadyGuessed.push(guess)
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
+        showFeedbackPopup(guess)
         displayWinningGuessRow(guess, alreadyGuessed.length)
         guessInput.value = ""
     } else if (alreadyGuessed.length >= 5) {
@@ -149,11 +150,13 @@ function submitGuess(e) {
         alreadyGuessed.push(guess)
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
         guessInput.value = ""
+        showFeedbackPopup(guess)
         displayNewGuessRow(guess, alreadyGuessed.length)
         displayGameOverRow()
     } else {
         alreadyGuessed.push(guess)
         localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
+        showFeedbackPopup(guess)
         displayNewGuessRow(guess, alreadyGuessed.length)
         guessInput.value = ""
     }
@@ -188,6 +191,27 @@ function launchConfetti() {
     }
     
     setTimeout(() => container.innerHTML = '', 5000)
+}
+
+function showFeedbackPopup(guess) {
+    const overlay = document.getElementById('feedback-overlay')
+    const circle = document.getElementById('feedback-circle')
+    const flag = document.getElementById('feedback-flag')
+    
+    // Set the original flag image from local assets
+    flag.src = `assets/original/${guess.toLowerCase().replaceAll(' ', '-')}.png`
+    
+    // Set color based on guess result
+    circle.classList.remove('correct', 'wrong')
+    circle.classList.add(guess === todaysSolution.name ? 'correct' : 'wrong')
+    
+    // Show the popup
+    overlay.classList.add('show')
+    
+    // Hide after a delay
+    setTimeout(() => {
+        overlay.classList.remove('show')
+    }, 1200)
 }
 
 function displayNewGuessRow(guessName, rowNumber) {
