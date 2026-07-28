@@ -24,6 +24,19 @@ body {
     gap: 24px;
 }
 
+/* Game title */
+.game-title {
+    font-family: 'Pacifico', cursive;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #6c63ff 0%, #ff6b9d 50%, #ffd93d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 20px rgba(108, 99, 255, 0.3);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
 /* Image placeholder */
 .image-container {
     width: 100%;
