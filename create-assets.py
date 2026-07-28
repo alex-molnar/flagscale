@@ -24,6 +24,8 @@ for country in data.values():
             inv_img = ImageChops.invert(img)
             inv_img.save(f'assets/inverted/{name}.png')
             print(f'Successfully created inverted image for {name}')
+            img.save(f'assets/original/{name}.png')
+            print(f'Successfully created original image for {name}')
         else:
             print(f'Failed to create inverted/grayscaled image for {name}: HTTP {response.status_code}')
             failures.append(name)
