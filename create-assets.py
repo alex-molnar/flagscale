@@ -6,8 +6,11 @@ from json import load
 with open('input.json', 'r') as f:
     data = load(f)
 
-failed_greyscales = ['turks-and-caicos-islands', 'curaçao', 'saint-pierre-and-miquelon', 'anguilla', 'argentina', 'austria', 'belize', 'greenland', 'the-gambia', 'norfolk-island', 'american-samoa', 'bolivia', 'caribbean-netherlands', 'aruba', 'us-virgin-islands', 'angola', 'australia', 'belgium', 'antigua-and-barbuda', 'benin', 'democratic-republic-of-the-congo', 'cook-islands', 'british-virgin-islands', 'montserrat', 'republic-of-congo', 'western-sahara', 'isle-of-man', 'puerto-rico', 'saint-helena', 'bahamas', 'vanuatu', 'new-caledonia', 'mauritania', 'palestine', 'french-guiana', 'armenia', 'guam', 'federated-states-of-micronesia', 'algeria', 'cayman-islands', 'sint-maarten', 'gibraltar', 'bhutan', 'hong-kong', 'botswana', 'barbados', "cote-d'ivoire", 'andorra', 'french-polynesia', 'guinea', 'united-states', 'brunei-darussalam', 'tokelau', 'belarus', 'bahrain', 'georgia', 'portugal', 'bosnia-and-herzegovina', 'northern-mariana-islands', 'niue', 'bermuda', 'wallis-and-futuna', 'czechia', 'azerbaijan', 'falkland-islands', 'timor-leste', 'bangladesh', 'eritrea']
-failed_inverts    = ['turks-and-caicos-islands', 'curaçao', 'saint-pierre-and-miquelon', 'anguilla', 'argentina', 'austria', 'belize', 'greenland', 'the-gambia', 'norfolk-island', 'american-samoa', 'bolivia', 'caribbean-netherlands', 'aruba', 'us-virgin-islands', 'angola', 'australia', 'belgium', 'antigua-and-barbuda', 'benin', 'democratic-republic-of-the-congo', 'cook-islands', 'british-virgin-islands', 'montserrat', 'republic-of-congo', 'western-sahara', 'isle-of-man', 'puerto-rico', 'saint-helena', 'bahamas', 'vanuatu', 'new-caledonia', 'mauritania', 'palestine', 'french-guiana', 'armenia', 'guam', 'federated-states-of-micronesia', 'algeria', 'cayman-islands', 'sint-maarten', 'gibraltar', 'bhutan', 'hong-kong', 'botswana', 'barbados', "cote-d'ivoire", 'andorra', 'french-polynesia', 'guinea', 'united-states', 'brunei-darussalam', 'tokelau', 'belarus', 'bahrain', 'georgia', 'portugal', 'bosnia-and-herzegovina', 'northern-mariana-islands', 'niue', 'bermuda', 'wallis-and-futuna', 'czechia', 'azerbaijan', 'falkland-islands', 'timor-leste', 'bangladesh', 'eritrea']
+# TODO: exclude from game after data migration
+# rerun_cases = {
+#     "caribbean-netherlands": "https://www.countryflags.com/wp-content/uploads/netherlands-flag-png-large.png",
+#     "french-guiana": "https://www.countryflags.com/wp-content/uploads/france-flag-png-large.png",
+# }
 
 failures = []
 
@@ -22,7 +25,7 @@ for country in data.values():
             print(f'Successfully created grayscale image for {name}')
             img = Image.open(bytes)
             inv_img = ImageChops.invert(img)
-            inv_img.save(f'assets/inverted/{name}.png')
+            inv_img.save(f'assets/invertedle/{name}.png')
             print(f'Successfully created inverted image for {name}')
             img.save(f'assets/original/{name}.png')
             print(f'Successfully created original image for {name}')
