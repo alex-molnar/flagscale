@@ -1,32 +1,29 @@
+import { capitalize } from 'https://assets.kak.im/api/javascript/stringUtils.js'
+import { getRandomSelectionForToday, getItemForToday, getDirection, mathDistance } from 'https://assets.kak.im/api/javascript/mathHelpers.js'
+import { format } from 'https://assets.kak.im/api/javascript/stringUtils.js'
+
 let gameTitle = PARAM_GAME_TITLE
 let alreadyGuessed = [] 
 let currentDate = new Date().toJSON().slice(0, 10);
-let todaysSolutionName = getRandomSolutionForToday()
+let todaysSolutionName = getRandomSelectionForToday(solutions, gameTitle)
 let todaysSolution = solutionsData[todaysSolutionName]
 let selectedSuggestionIndex = -1
 
-function getRandomSolutionForToday() {
-  let seed = parseInt(currentDate.replaceAll("-", "") + gameTitle.length);
-  // LCG using GCC's constants
-  m = 0x80000000; // 2**31;
-  a = 1103515245;
-  c = 12345;
-
-  return solutions[Math.floor((((a * seed + c) % m) / m) * solutions.length)]
-}
-
-function getAlreadyGuessedToday() {
-    if (localStorage.getItem(`${gameTitle}-${currentDate}`) != null) {
-        alreadyGuessed = JSON.parse(localStorage.getItem(`${gameTitle}-${currentDate}`))
-    } else {
-        localStorage.clear()
-        alreadyGuessed = []
-        localStorage.setItem(`${gameTitle}-${currentDate}`, JSON.stringify(alreadyGuessed))
-    }
+function formatGuessItem(name, distance, direction, additionalClassList = "") {
+    return format(`
+            <div class="guess-item guess-name{3}">{0}</div>
+            <div class="guess-item guess-distance{3}">{1}km</div>
+            <div class="guess-item guess-direction{3}">{2}</div>
+        `, 
+        name, 
+        distance, 
+        direction, 
+        ` ${additionalClassList}`
+    )
 }
 
 function loadGame() {
-    getAlreadyGuessedToday()
+    alreadyGuessed = getItemForToday(gameTitle, alreadyGuessed)
     document.getElementById("game-title").textContent = gameTitle.capitalize()
     document.getElementById("game-description").textContent = explanations[gameTitle] || ""
     document.getElementById("flag-image").src = `https://assets.kak.im/assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
@@ -224,7 +221,7 @@ function displayNewGuessRow(guessName, rowNumber) {
         todaysData.latitude, todaysData.longitude
     )
 
-    const directionEmoji = getDirectionClass(Math.atan2(guessData.longitude - todaysData.longitude, guessData.latitude - todaysData.latitude) * 180 / Math.PI)
+    const directionEmoji = getDirection(Math.atan2(guessData.longitude - todaysData.longitude, guessData.latitude - todaysData.latitude) * 180 / Math.PI).directionIcon
 
     // Get current active row and fill it
     const currentRow = document.querySelector(`.guess-row[data-row="${rowNumber}"]`)
