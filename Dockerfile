@@ -4,14 +4,8 @@ ARG FLAVOUR
 
 RUN rm -f /usr/share/nginx/html/index.html
 
-RUN mkdir -p /usr/share/nginx/html/src
-
 COPY index.html /usr/share/nginx/html
-COPY src/format.js /usr/share/nginx/html/src/format.js
-COPY src/mathHelpers.js /usr/share/nginx/html/src/mathHelpers.js
-COPY src/index.js /usr/share/nginx/html/src/index.js
-COPY src/data.js /usr/share/nginx/html/src/data.js
-COPY style.css /usr/share/nginx/html/style.css
-COPY assets /usr/share/nginx/html/assets
+COPY game.js /usr/share/nginx/html
+COPY style.css /usr/share/nginx/html
 
-RUN sed -i "s/PARAM_GAME_TITLE/'$FLAVOUR'/g" /usr/share/nginx/html/src/index.js
+RUN sed -i "s/PARAM_GAME_TITLE/'$FLAVOUR'/g" /usr/share/nginx/html/game.js
