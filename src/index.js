@@ -29,7 +29,7 @@ function loadGame() {
     getAlreadyGuessedToday()
     document.getElementById("game-title").textContent = gameTitle.capitalize()
     document.getElementById("game-description").textContent = explanations[gameTitle] || ""
-    document.getElementById("flag-image").src = `assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
+    document.getElementById("flag-image").src = `https://assets.kak.im/assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
     alreadyGuessed
         .filter(guess => guess !== todaysSolutionName)
         .forEach((guess, index) => displayNewGuessRow(guess, index + 1))
@@ -199,7 +199,7 @@ function showFeedbackPopup(guess) {
     const flag = document.getElementById('feedback-flag')
     
     // Set the original flag image from local assets
-    flag.src = `assets/original/${guess.toLowerCase().replaceAll(' ', '-')}.png`
+    flag.src = `https://assets.kak.im/assets/original/${guess.toLowerCase().replaceAll(' ', '-')}.png`
     
     // Set color based on guess result
     circle.classList.remove('correct', 'wrong')
