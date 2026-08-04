@@ -10,10 +10,6 @@ const validCountries = countryNames.filter(country => countryData[country].flag 
 let todaysSolutionName = getRandomSelectionForToday(validCountries, gameTitle)
 let todaysSolution = countryData[todaysSolutionName]
 
-console.log(`Today's solution for ${gameTitle} is: ${todaysSolutionName}`)
-console.log(`Today's solution data:`, todaysSolution)
-console.log(`Valid countries:`, validCountries)
-
 const explanations = {
     "grayscale": "Guess the country which's flag is displayed in grayscale above. Wrong guesses give you additional hints.",
     "invertedle": "Guess the country which's flag is displayed in inverted rgb scale above. Wrong guesses give you additional hints."
