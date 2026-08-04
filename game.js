@@ -71,8 +71,8 @@ function showFeedbackPopup(guess) {
 }
 
 function displayNewGuessRow(guessName, rowNumber) {
-    const guessData = countryData[guessName]
-    const todaysData = todaysSolution
+    const guessData = countryData[guessName].country
+    const todaysData = todaysSolution.country
 
     // Calculate distance and direction
     const distance = mathDistance(
@@ -98,8 +98,8 @@ function displayNewGuessRow(guessName, rowNumber) {
 }
 
 function displayWinningGuessRow(guessName, rowNumber) {
-    const guessData = countryData[guessName]
-    const todaysData = todaysSolution
+    const guessData = countryData[guessName].country
+    const todaysData = todaysSolution.country
 
     // Get current active row and fill it with winning state
     const currentRow = document.querySelector(`.guess-row[data-row="${rowNumber}"]`)
