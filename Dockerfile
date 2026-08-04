@@ -10,6 +10,5 @@ COPY index.html /usr/share/nginx/html
 COPY src/index.js /usr/share/nginx/html/src/index.js
 COPY src/data.js /usr/share/nginx/html/src/data.js
 COPY style.css /usr/share/nginx/html/style.css
-COPY assets /usr/share/nginx/html/assets
 
 RUN sed -i "s/PARAM_GAME_TITLE/'$FLAVOUR'/g" /usr/share/nginx/html/src/index.js
