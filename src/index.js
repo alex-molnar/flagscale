@@ -50,7 +50,7 @@ function displayRowsCallback(guessName, rowNumber, initial) {
 function onLoadGame() {
     loadGame(gameTitle, todaysSolutionName, validCountries, displayRowsCallback)
     document.getElementById("game-description").textContent = explanations[gameTitle] || ""
-    document.getElementById("flag-image").src = `https://assets.kak.im/assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
+    document.getElementById("flag-image").src = todaysSolution[gameTitle]
 }
 
 function showFeedbackPopup(guess) {
@@ -59,7 +59,7 @@ function showFeedbackPopup(guess) {
     const flag = document.getElementById('feedback-flag')
     
     // Set the original flag image from local assets
-    flag.src = `https://assets.kak.im/assets/original/${guess.toLowerCase().replaceAll(' ', '-')}.png`
+    flag.src = countryData[guess].flag
     
     // Set color based on guess result
     circle.classList.remove('correct', 'wrong')
