@@ -2,6 +2,8 @@ import { capitalize } from 'https://assets.kak.im/api/javascript/stringUtils.js'
 import { getRandomSelectionForToday, getItemForToday, getDirection, mathDistance } from 'https://assets.kak.im/api/javascript/mathHelpers.js'
 import { format } from 'https://assets.kak.im/api/javascript/stringUtils.js'
 
+import { solutions, solutionsData, explanations } from './data.js'
+
 let gameTitle = PARAM_GAME_TITLE
 let alreadyGuessed = [] 
 let currentDate = new Date().toJSON().slice(0, 10);
