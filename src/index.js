@@ -3,15 +3,21 @@ import { getRandomSelectionForToday, getItemForToday, getDirection, mathDistance
 import { format } from 'https://assets.kak.im/api/javascript/stringUtils.js'
 import { loadGame } from 'https://assets.kak.im/api/javascript/gameHandler.js'
 import { launchConfetti } from 'https://assets.kak.im/api/javascript/animations.js'
-
-import { solutions, solutionsData, explanations } from './data.js'
+import { countryData, countryNames } from 'https://assets.kak.im/api/javascript/countryData.js'
 
 let gameTitle = PARAM_GAME_TITLE
-let alreadyGuessed = [] 
-let currentDate = new Date().toJSON().slice(0, 10);
-let todaysSolutionName = getRandomSelectionForToday(solutions, gameTitle)
-let todaysSolution = solutionsData[todaysSolutionName]
-let selectedSuggestionIndex = -1
+const validCountries = countryNames.filter(country => countryData[country].flag !== undefined)
+let todaysSolutionName = getRandomSelectionForToday(validCountries, gameTitle)
+let todaysSolution = countryData[todaysSolutionName]
+
+console.log(`Today's solution for ${gameTitle} is: ${todaysSolutionName}`)
+console.log(`Today's solution data:`, todaysSolution)
+console.log(`Valid countries:`, validCountries)
+
+const explanations = {
+    "grayscale": "Guess the country which's flag is displayed in grayscale above. Wrong guesses give you additional hints.",
+    "invertedle": "Guess the country which's flag is displayed in inverted rgb scale above. Wrong guesses give you additional hints."
+}
 
 function formatGuessItem(name, distance, direction, additionalClassList = "") {
     return format(`
@@ -42,7 +48,7 @@ function displayRowsCallback(guessName, rowNumber, initial) {
 }
 
 function onLoadGame() {
-    loadGame(gameTitle, todaysSolutionName, solutions, displayRowsCallback)
+    loadGame(gameTitle, todaysSolutionName, validCountries, displayRowsCallback)
     document.getElementById("game-description").textContent = explanations[gameTitle] || ""
     document.getElementById("flag-image").src = `https://assets.kak.im/assets/${gameTitle}/${todaysSolutionName.toLowerCase().replaceAll(' ', '-')}.png`
 }
@@ -57,7 +63,7 @@ function showFeedbackPopup(guess) {
     
     // Set color based on guess result
     circle.classList.remove('correct', 'wrong')
-    circle.classList.add(guess === todaysSolution.name ? 'correct' : 'wrong')
+    circle.classList.add(guess === todaysSolutionName ? 'correct' : 'wrong')
     
     // Show the popup
     overlay.classList.add('show')
@@ -69,7 +75,7 @@ function showFeedbackPopup(guess) {
 }
 
 function displayNewGuessRow(guessName, rowNumber) {
-    const guessData = solutionsData[guessName]
+    const guessData = countryData[guessName]
     const todaysData = todaysSolution
 
     // Calculate distance and direction
@@ -96,7 +102,7 @@ function displayNewGuessRow(guessName, rowNumber) {
 }
 
 function displayWinningGuessRow(guessName, rowNumber) {
-    const guessData = solutionsData[guessName]
+    const guessData = countryData[guessName]
     const todaysData = todaysSolution
 
     // Get current active row and fill it with winning state
